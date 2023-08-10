@@ -87,6 +87,10 @@ $(document).ready(function () {
 
     function checkWin() {
         players.forEach(function (player) {
+            //si no hay puntaje-maximo, tomar el valor del input y guardarlo en el localstorage
+            if (!localStorage.getItem('puntaje-maximo')) {
+                localStorage.setItem('puntaje-maximo', JSON.stringify($("#puntaje-maximo").val()));
+            }
             const pm = JSON.parse(localStorage.getItem('puntaje-maximo'));
             if (player.score >= pm) {
                 const playerElement = $(`#li_${player.name}`);
