@@ -1,6 +1,20 @@
 $(document).ready(function () {
     let players = [];
 
+    //funcion que si no hay maximo en local storage ponga valor 100, lo guarde y lo ponga en el input
+    function loadMaxScoreFromLocalStorage() {
+        const storedMaxScore = JSON.parse(localStorage.getItem('puntaje-maximo'));
+        if (!storedMaxScore) {
+            localStorage.setItem('puntaje-maximo', JSON.stringify(100));
+            $("#puntaje-maximo").val(100);
+        }
+        else {
+            $("#puntaje-maximo").val(storedMaxScore);
+        }
+    }
+
+    loadMaxScoreFromLocalStorage();
+
     function loadPlayersFromLocalStorage() {
         const storedPlayers = JSON.parse(localStorage.getItem('players'));
         if (storedPlayers) {
