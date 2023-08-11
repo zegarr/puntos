@@ -65,13 +65,15 @@ $(document).ready(function () {
                 modalBody.append(`<table class="table table-striped table-hover"><thead><tr><th scope="col">#</th><th scope="col">Historial</th></tr></thead><tbody></tbody></table>`)
                 //recorrer el historial y agregar los tr y td
                 player.history.forEach(function (history, index) {
+                    if (history.includes('Alcanzo el limite')) {
+                        index = index - 1;
+                    }
                     modalBody.find('tbody').append(`<tr><th scope="row">${index + 1}</th><td>${history}</td></tr>`);
                 });
             }
             else {
                 modalBody.append(`<tr><td>No hay historial</td></tr>`);
             }
-
         }
     });
 
@@ -109,7 +111,7 @@ $(document).ready(function () {
             if (player.score >= pm) {
                 const playerElement = $(`#li_${player.name}`);
                 playerElement.addClass('text-danger');
-                player.history.push('Perdió!');
+                player.history.push('Alcanzo el limite!');
                 alert(`${player.name} llegó o pasó los ${pm} puntos.`);
                 savePlayersToLocalStorage();
             }
