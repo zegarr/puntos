@@ -11,7 +11,7 @@ const Toast = Swal.mixin({
         popup: 'colored-toast'
     },
     showConfirmButton: false,
-    timer: 1500,
+    timer: 3500,
     timerProgressBar: true
 });
 
@@ -108,8 +108,12 @@ function actualizarLista() {
 
 function generarLinea(nombre, puntaje, datosBtn) {
     let ret = '<tr><td><span class="text-sm"><b>' + nombre + '</b></span></td>';
-    ret += '<td class="align-middle text-center"><span class="badge badge-sm text-lg">' + puntaje + '</span></td>';
-    ret += '<td class="text-sm text-end font-weight-semibold text-dark"><button class="btn btn-white btn-icon m-0 px-3 ' + datosBtn.claseEvento + '" idJugador="' + datosBtn.idJugador + '"><i class="fa ' + datosBtn.icono + '"></i></button></td></tr>';
+    var llegoMaximo = '';
+    ret += '<td class="align-middle text-center"><span class="badge badge-light badge-sm text-lg">' + puntaje + '</span></td>';
+    if (puntaje >= parseInt(localStorage.getItem("puntajeMaximo"))) {
+        var llegoMaximo = '<span class="badge badge-warning badge-sm text-xs me-3">Límite</span>';
+    }
+    ret += '<td class="text-sm text-end font-weight-semibold text-dark">' + llegoMaximo + '<button class="btn btn-white btn-icon m-0 px-3 ' + datosBtn.claseEvento + '" idJugador="' + datosBtn.idJugador + '"><i class="fa ' + datosBtn.icono + '"></i></button></td></tr>';
     return ret;
 }
 
@@ -120,7 +124,7 @@ function borrarTodo() {
     localStorage.setItem("rondas", JSON.stringify([]));
     Toast.fire({
         icon: 'info',
-        title: "Todos los jugadores fueron eliminados."
+        title: "Todos los datos fueron eliminados."
     });
     actualizarLista();
 }
@@ -133,9 +137,6 @@ function cargarNuevaRonda() {
     //obtener los jugadores de localStorage, mostrarlos en el modal para que el usuario ponga los puntajes de cada uno para esa ronda
     let jugadores = localStorage.getItem("jugadores");
     jugadores = JSON.parse(jugadores);
-    jugadores.sort((a, b) => {
-        return b.puntos - a.puntos;
-    });
     $("#contenidoNuevaRonda").html("");
     jugadores.forEach(function (jugador, idJugador) {
         let html = generarLineaRonda(jugador.nombre, idJugador);
@@ -154,33 +155,63 @@ function generarLineaRonda(nombre, idJugador) {
 function guardarRonda() {
     //obtener el puntaje maximo de localStorage
     let puntajeMaximo = parseInt(localStorage.getItem("puntajeMaximo"));
-    var jugadores = localStorage.getItem("jugadores");
-    var jugadoresSuperaronPuntajeMaximo = [];
     //recorrer los inputJugadorRonda
-    $(".inputJugadorRonda").each(function () {
-        let idJugador = $(this).attr("idJugador");
-        let puntos = parseInt($(this).val());
-        //si el valor del input es mayor al puntaje maximo, agregar el idJugador a un array
-        if (puntos > puntajeMaximo) {
-            jugadoresSuperaronPuntajeMaximo.push(idJugador);
-        }
-        //crear una ronda con el idJugador y el puntaje que ingreso el usuario
-        let ronda = {
-            "idJugador": idJugador,
-            "puntaje": puntos,
-            "alcanzoPuntajeMaximo": puntos >= puntajeMaximo ? true : false,
-        };
+    let inputs = $(".inputJugadorRonda");
+    //chequear que no haya 2 input vacios, solo debe haber 1 en otra funcion
+    let ronda = [];
+    if (chequearInputsVacios(inputs)) {
+        inputs.each(function () {
+            let idJugador = $(this).attr("idJugador");
+            //valuePuntos pasar a int, si viene vacio poner 
+            let valuePuntos = $(this).val().trim() === "" ? 0 : $(this).val();
 
-        //guardar la ronda en localStorage
-        let rondas = localStorage.getItem("rondas");
-        rondas = JSON.parse(rondas);
-        rondas.push(ronda);
-        localStorage.setItem("rondas", JSON.stringify(rondas));
-        //sumar el puntaje de la ronda al jugador
-        jugadores = JSON.parse(jugadores);
-        jugadores[ronda.idJugador].puntos += parseInt(ronda.puntaje);
-        localStorage.setItem("jugadores", JSON.stringify(jugadores));
-    });
-    //actualizar la lista de jugadores
-    actualizarLista();
+            //sumar el puntaje de la ronda al jugador
+            let jugadores = localStorage.getItem("jugadores");
+            jugadores = JSON.parse(jugadores);
+            jugadores[idJugador].puntos += parseInt(valuePuntos);
+            localStorage.setItem("jugadores", JSON.stringify(jugadores));
+
+            let llegoPuntajeMaximo = jugadores[idJugador].puntos >= puntajeMaximo;
+            //crear una ronda con el idJugador y el puntaje que ingreso el usuario
+            let registro_ronda = {
+                "idJugador": idJugador,
+                "puntaje": valuePuntos,
+                "alcanzoPuntajeMaximo": llegoPuntajeMaximo,
+            };
+            ronda.push(registro_ronda);
+        });
+        if (ronda.length > 0) {
+            //obtener las rondas de localStorage
+            let rondasLS = localStorage.getItem("rondas");
+            rondasLS = JSON.parse(rondasLS);
+            //agregar la ronda a las rondas de localStorage
+            rondasLS.push(ronda);
+            localStorage.setItem("rondas", JSON.stringify(rondasLS));
+            Toast.fire({
+                icon: 'success',
+                title: "Ronda guardada"
+            });
+        } else {
+            Toast.fire({
+                icon: 'error',
+                title: "No se puede guardar una ronda vacia."
+            });
+        }
+        //actualizar la lista de jugadores
+        actualizarLista();
+        //cerrar el modal
+        $("#modalNuevaRonda").modal("hide");
+    } else {
+        Toast.fire({
+            icon: 'error',
+            title: "Solo puede cortar un jugador por ronda."
+        });
+    }
+}
+
+function chequearInputsVacios(inputs) {
+    let inputsVacios = inputs.filter(function () {
+        return $(this).val() === "" || $(this).val() === "0" || $(this).val() === 0 || $(this).val() === null || $(this).val() === undefined;
+    }).length;
+    return inputsVacios <= 1;
 }

@@ -121,7 +121,7 @@
     </div>
     <div class="row">
       <div class="modal" tabindex="-1" id="modalNuevaRonda">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl modal-md-sm">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title">Ingresar Nueva Ronda</h5>
@@ -140,12 +140,37 @@
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title">Historial</h5>
+              <h5 class="modal-title">Historial de Rondas</h5>
               <button type="button" class="btn-close text-danger" data-bs-dismiss="modal" aria-label="Close">
                 <i class="fa fa-times"></i>
               </button>
             </div>
-            <div id="contenidoHistorial" class="modal-body"></div>
+            <div id="contenidoHistorial" class="modal-body">
+              <div class="row">
+                <div class="col-12">
+                  <ul class="list-group">
+                    <li class="list-group-item border-warning mb-3 border-radius-md shadow-xs p-3 pt-2">
+                      <h6 class="mb-1 mt-0 text-sm text-warning">Ronda 5</h6>
+                      <div class="row">
+                        <div class="col-6">
+                          <ul class="list-group">
+                            <li
+                              class="list-group-item border-info d-flex justify-content-between mb-3 border-radius-md shadow-xs p-2">
+                              <div class="d-flex align-items-start">
+                                <div class="d-flex flex-column">
+                                  <h6 class="mb-0 text-sm text-info">Nombre Jugador</h6>
+                                  <span class="text-sm text-info">45</span>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
