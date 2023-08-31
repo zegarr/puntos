@@ -129,10 +129,6 @@ function borrarTodo() {
     actualizarLista();
 }
 
-function cargarHistorial() {
-    //
-}
-
 function cargarNuevaRonda() {
     //obtener los jugadores de localStorage, mostrarlos en el modal para que el usuario ponga los puntajes de cada uno para esa ronda
     let jugadores = localStorage.getItem("jugadores");
@@ -175,6 +171,7 @@ function guardarRonda() {
             //crear una ronda con el idJugador y el puntaje que ingreso el usuario
             let registro_ronda = {
                 "idJugador": idJugador,
+                "nombreJugador": obtenerJugador(idJugador).nombre, //nombre del jugador
                 "puntaje": valuePuntos,
                 "alcanzoPuntajeMaximo": llegoPuntajeMaximo,
             };
@@ -214,4 +211,54 @@ function chequearInputsVacios(inputs) {
         return $(this).val() === "" || $(this).val() === "0" || $(this).val() === 0 || $(this).val() === null || $(this).val() === undefined;
     }).length;
     return inputsVacios <= 1;
+}
+
+function cargarHistorial() {
+    //obtener las rondas de localStorage
+    let rondasLS = localStorage.getItem("rondas");
+    rondasLS = JSON.parse(rondasLS);
+    //ordenar las rondas de la ultima a la primera
+    rondasLS.reverse();
+    $("#contenidoHistorial").html("");
+    let idRonda = rondasLS.length;
+    rondasLS.forEach(function (ronda) {
+        let html = `
+        <div class="col-12">
+                  <ul class="list-group">
+                    <li class="list-group-item border-warning mb-3 border-radius-md shadow-xs p-3 py-2">
+                      <h6 class="mb-1 mt-0 text-sm text-warning">Ronda ${idRonda}</h6>
+                      <div class="row">${generarItemsRonda(ronda)}</div>
+                    </li>
+                  </ul>
+                </div>`;
+        idRonda--;
+        $("#contenidoHistorial").append(html);
+    });
+}
+
+function generarItemsRonda(ronda) {
+    let itemsRonda = "";
+    ronda.forEach(function (item) {
+        let puntaje = item.puntaje === 0 ? '<span class="badge badge-warning badge-sm text-xs py-1">Cortó</span>' : item.puntaje;
+        let nombreJugador = obtenerJugador(item.idJugador) != undefined ? obtenerJugador(item.idJugador).nombre : item.nombreJugador;
+        itemsRonda += `
+    <div class="col-6 mb-2">
+        <ul class="list-group">
+        <li
+            class="list-group-item border-info mb-0 border-radius-md shadow-xs p-2">
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 text-sm text-info">${nombreJugador}</h6>
+                <span class="text-sm text-info">${puntaje}</span>
+            </div>
+        </li>
+        </ul>
+    </div>`;
+    });
+    return itemsRonda;
+}
+
+function obtenerJugador(idJugador) {
+    let jugadores = localStorage.getItem("jugadores");
+    jugadores = JSON.parse(jugadores);
+    return jugadores[idJugador];
 }
