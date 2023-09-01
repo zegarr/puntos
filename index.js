@@ -33,6 +33,7 @@ $(document).ready(function () {
     //cuando se cambie el puntaje maximo, guardarlo en localStorage
     $("#puntajeMaximo").on("change", function () {
         localStorage.setItem("puntajeMaximo", parseInt($(this).val()));
+        actualizarLista();
     });
     //actualizar la lista de jugadores
     actualizarLista();
@@ -47,8 +48,8 @@ $(document).ready(function () {
 });
 
 function nuevoJugador() {
-    let nom = $("#txtNom").val();
-    if ((nom.length >= 3 && nom.length < 15)) {
+    let nom = $("#txtNom").val().trim();
+    if ((nom.length >= 3 && nom.length <= 15)) {
         //agregar jugador a localStorage
         let jugadores = localStorage.getItem("jugadores");
         jugadores = JSON.parse(jugadores);
@@ -239,7 +240,7 @@ function cargarHistorial() {
 function generarItemsRonda(ronda) {
     let itemsRonda = "";
     ronda.forEach(function (item) {
-        let puntaje = item.puntaje === 0 ? '<span class="badge badge-warning badge-sm text-xs py-1">Cortó</span>' : item.puntaje;
+        let puntaje = item.puntaje == 0 ||  item.puntaje == "" ? '<span class="badge badge-warning badge-sm text-xs py-1">Cortó</span>' : item.puntaje;
         let nombreJugador = obtenerJugador(item.idJugador) != undefined ? obtenerJugador(item.idJugador).nombre : item.nombreJugador;
         itemsRonda += `
     <div class="col-6 mb-2">
