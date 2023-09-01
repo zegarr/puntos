@@ -16,8 +16,9 @@
 1. Agrega los nombres de los jugadores al inicio de la partida.
 2. Registra los puntajes de cada jugador al finalizar cada partida.
 3. Observa el historial de puntajes de cada jugador para ver su progreso a lo largo de las partidas.
-4. Si un jugador alcanza o supera un límite de puntos, recibirás una alerta de que ha perdido.
-5. Si es necesario, puedes borrar jugadores para comenzar de nuevo.
+4. Si un jugador alcanza o supera un límite de puntos, recibirás una alerta.
+5. Si es necesario, puedes borrar jugadores.
+6. Puedes apretar el boton de Borrar Todo para comenzar de nuevo.
 
 ## Motivación
 

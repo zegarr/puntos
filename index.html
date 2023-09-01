@@ -2,56 +2,218 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Puntos</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/logos/logo.png">
+  <link rel="icon" type="image/png" href="./assets/img/logos/logo.png">
+  <title>
+    Puntos
+  </title>
+  <!--     Fonts and icons     -->
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Noto+Sans:300,400,500,600,700,800|PT+Mono:300,400,500,600,700"
+    rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- <link href="./assets/js/plugins/sweetalert2/sweetalert2.min.css" rel="stylesheet" /> -->
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/349ee9c857.js" crossorigin="anonymous"></script>
+  <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link id="pagestyle" href="./assets/css/corporate-ui-dashboard.css?v=1.0.0" rel="stylesheet" />
 </head>
 
-<body>
-    <div class="container mt-2">
+<body class="g-sidenav-show bg-gray-100">
+  <main class="main-content max-height-vh-100 h-100">
+    <div class="row mx-0">
+      <div class="col-12 col-md-6 offset-md-3">
         <div class="row">
-            <div class="col-lg-5 offset-lg-3">
-                <div class="row">
-                    <div class="col-12 mb-3">
+          <div class="col-12">
+            <div class="card card-background card-background-after-none align-items-start mx-0 my-2">
+              <div class="full-background" style="background-image: url('./assets/img/header-orange.jpg')"></div>
+              <div class="card-body text-start p-4 w-100">
+                <h3 class="text-white mb-3 d-flex justify-content-between">
+                  <span class="me-4">Puntos</span>
+                  <button id="btnBorrarTodo" type="button"
+                    class="btn btn-outline-white btn-blur align-items-center px-2 mt-0 mb-0">
+                    <i class="fa fa-trash"></i>
+                    <span class="btn-inner-text">Reiniciar</span>
+                  </button>
+                </h3>
+                <div class="d-flex justify-content-between">
+                  <button id="btnCargarNuevaRonda" type="button"
+                    class="btn btn-outline-white btn-blur btn-icon d-flex align-items-center mb-0 me-1 px-2"
+                    data-bs-toggle="modal" data-bs-target="#modalNuevaRonda">
+                    <i class="fa fa-plus me-2"></i>
+                    <span class="btn-inner-text">Ronda</span>
+                  </button>
+                  <button id="btnCargarHistorial" type="button"
+                    class="btn btn-outline-white btn-blur btn-icon d-flex align-items-center mb-0 me-1 px-2"
+                    data-bs-toggle="modal" data-bs-target="#modalHistorial">
+                    <i class="fa fa-list me-2"></i>
+                    <span class="btn-inner-text">Historial</span>
+                  </button>
+                  <input type="number" id="puntajeMaximo" class="form-control text-white text-center w-25"
+                    id="txtLimite" placeholder="Máximo" style="background-color: #00000018;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <div id="divAgregarJugador" class="card collapse shadow-xs border mb-1 mx-0 p-3" aria-expanded="false"
+              aria-controls="btnDivAgregarCollapse">
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="txtNom" placeholder="Nombre">
+                  </div>
+                  <button id="btnAgregarJugador" class="btn btn-warning w-75 mb-0">Agregar</button>
+                  <button class="btn btn-outline-white btn-blur text-secondary px-2 ms-3 mb-0"
+                    data-bs-target="#divAgregarJugador" data-bs-toggle="collapse">Cerrar</button>
+                </div>
+              </div>
+            </div>
+            <div class="card shadow-xs border mb-4 mx-0">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <td colspan="3">
                         <div class="d-flex align-items-center justify-content-between">
-                            <button class="btn btn-sm btn-primary form-control w-50 mt-2" id="addPlayer">+
-                                Jugador</button>
-                            <button class="btn btn-sm btn-secondary form-control w-50 mt-2" id="resetPlayers">Borrar
-                                Todo</button>
-                            <div class="d-flex align-items-center justify-content-end flex-row w-100">
-                                <label class="text-center me-2"><b>Tope:</b></label>
-                                <input class="form-control w-50" id="puntaje-maximo">
-                            </div>
+                          <h5 class="mb-0">Posiciones</h5>
+                          <button id="btnDivAgregarCollapse" type="button"
+                            class="btn btn-outline-warning btn-icon d-flex align-items-center mb-0"
+                            data-bs-target="#divAgregarJugador" data-bs-toggle="collapse">
+                            <i class="fa fa-plus me-2"></i>
+                            <span class="btn-inner-text">Jugador</span>
+                          </button>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <ul id="playerList" class="list-group"></ul>
-                    </div>
-                </div>
+                      </td>
+                    </tr>
+                  </thead>
+                  <tbody id="jugadores"></tbody>
+                </table>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <!-- Modal -->
-    <div class="modal" id="modalHistorial" tabindex="-1" aria-labelledby="modalHistorialLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="modalHistorialLabel">Historial</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body"></div>
+    <div class="row mx-0">
+      <footer class="footer pt-3">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-12 mb-4">
+              <div class="copyright text-center text-xs text-muted">
+                Este sitio web y la forma en que está programado no tienen ningún impacto en los resultados
+                del juego. Si la persona que creó este sitio empieza a ganar, sepa entender que es pura
+                coincidencia. No hay ninguna intención de favorecer a ningún jugador ni de afectar los resultados de
+                manera injusta. El objetivo principal de esta herramienta es proporcionar un medio conveniente para
+                llevar un registro de los puntajes en sus partidas. Si te estoy ganando es porque
+                soy mejor, simple.<br><br>Creado por <b><a href="https://github.com/zegarr"
+                    target="_blank">@zegarr</a></b>
+              </div>
             </div>
+          </div>
         </div>
+      </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.write('<script src="puntos.js?dev=' + new Date().getTime() + '"><\/script>')
-    </script>
+    <div class="row">
+      <div class="modal" tabindex="-1" id="modalNuevaRonda">
+        <div class="modal-dialog modal-xl modal-md-sm">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Ingresar Nueva Ronda</h5>
+              <button type="button" class="btn-close text-danger" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+            <div id="contenidoNuevaRonda" class="modal-body"></div>
+            <div class="modal-footer">
+              <button id="btnGuardarRonda" type="button" class="btn btn-warning mb-0">Guardar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" tabindex="-1" id="modalHistorial">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Historial de Rondas</h5>
+              <button type="button" class="btn-close text-danger" data-bs-dismiss="modal" aria-label="Close">
+                <i class="fa fa-times"></i>
+              </button>
+            </div>
+            <div id="contenidoHistorial" class="modal-body">
+              <div class="row" id="contenidoHistorial"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!--   Core JS Files   -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+  <script src="./assets/js/core/popper.min.js"></script>
+  <script src="./assets/js/core/bootstrap.min.js"></script>
+  <!-- <script src="./assets/js/plugins/sweetalert2/sweetalert2.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="sweetalert2.all.min.js"></script>
+  <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="./assets/js/plugins/chartjs.min.js"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <style>
+    .colored-toast.swal2-icon-success {
+      background-color: #a5dc86 !important;
+    }
+
+    .colored-toast.swal2-icon-error {
+      background-color: #f27474 !important;
+    }
+
+    .colored-toast.swal2-icon-warning {
+      background-color: #f8bb86 !important;
+    }
+
+    .colored-toast.swal2-icon-info {
+      background-color: #3fc3ee !important;
+    }
+
+    .colored-toast.swal2-icon-question {
+      background-color: #87adbd !important;
+    }
+
+    .colored-toast .swal2-title {
+      color: white;
+    }
+
+    .colored-toast .swal2-close {
+      color: white;
+    }
+
+    .colored-toast .swal2-html-container {
+      color: white;
+    }
+  </style>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Corporate UI Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="./assets/js/corporate-ui-dashboard.min.js?v=1.0.0"></script>
+  <script>
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src = "./index.js?v=" + Date.now();
+    document.getElementsByTagName("body")[0].appendChild(script);
+  </script>
 </body>
 
 </html>
