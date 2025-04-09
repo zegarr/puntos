@@ -45,6 +45,11 @@ $(document).ready(function () {
     $("#btnDivAgregarCollapse").on("click", function () {
         $("#txtNom").focus();
     });
+    $("#txtNom").on("keypress", function (e) {
+        if (e.which == 13) {
+            nuevoJugador();
+        }
+    })
 });
 
 function nuevoJugador() {
